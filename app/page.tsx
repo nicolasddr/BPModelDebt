@@ -1,5 +1,7 @@
+import { FindingsList } from "@/components/FindingsList";
 import { ModelHeader } from "@/components/ModelHeader";
 import { Topbar } from "@/components/Topbar";
+import { mockFindings } from "@/mock/findings";
 
 export default function Home() {
   return (
@@ -14,6 +16,7 @@ export default function Home() {
             pools: 3,
           }}
         />
+        <FindingsList findings={mockFindings} />
       </div>
     </>
   );
