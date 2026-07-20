@@ -5,11 +5,10 @@ export type ModelMeta = {
   pools: number;
 };
 
-// Estágio 1: código do anti-padrão (Dias 2018). Provisório — falta o codebook
-// completo (`Anti_Padroes.md`) para fechar a união em AP-01..AP-10.
+// Estágio 1
 export type Stage1Category = `AP-${string}`;
 
-// Estágio 2: vocabulário fechado (seção F do TAREFAS.md).
+// Estágio 2
 export type Stage2Category =
   | "atividade"
   | "participantes"

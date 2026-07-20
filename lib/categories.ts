@@ -7,13 +7,12 @@ export type CategoryInfo = {
   color: CategoryColor;
 };
 
-// Vocabulário fechado (seção F). Estágio 2 é definitivo; estágio 1 (AP-xx)
-// é provisório até o codebook completo (`Anti_Padroes.md`) chegar.
 const CATEGORY_LABELS: Record<string, CategoryInfo> = {
   atividade: { label: "Atividade", color: "teal" },
   participantes: { label: "Participantes", color: "pink" },
   modelagem: { label: "Modelagem", color: "amber" },
   "dados-mensagens": { label: "Dados e mensagens", color: "teal" },
+  "AP-02": { label: "Modelagem", color: "amber" },
   "AP-04": { label: "Modelagem", color: "amber" },
   "AP-07": { label: "Modelagem", color: "amber" },
 };

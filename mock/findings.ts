@@ -31,4 +31,14 @@ export const mockFindings: Finding[] = [
     reference: "Dias (2018) · AP-07",
     recommendation: "adicionar evento de fim ao ramo",
   },
+  {
+    stage: 1,
+    category: "AP-02",
+    title: "Convergência de gateway ausente",
+    description:
+      "Os ramos abertos pelo gateway paralelo após \"Analisar documentos\" não voltam a convergir, deixando o fluxo sem ponto de junção explícito.",
+    bpmn_element: { id: "ParallelGateway_3f" },
+    reference: "Dias (2018) · AP-02",
+    recommendation: "adicionar gateway de junção correspondente à divergência",
+  },
 ];

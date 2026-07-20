@@ -1,4 +1,4 @@
-import { IconGitBranch, IconUpload } from "@tabler/icons-react";
+import { IconGitBranch } from "@tabler/icons-react";
 
 export function Topbar() {
   return (
@@ -6,13 +6,6 @@ export function Topbar() {
       <div className="flex items-center gap-[9px] text-[15px] font-medium">
         <IconGitBranch size={19} className="text-accent" stroke={1.75} />
       </div>
-      <button
-        type="button"
-        className="inline-flex h-[34px] items-center gap-1.5 rounded border border-border-strong bg-transparent px-3.5 text-[13px] text-ink hover:bg-s1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-      >
-        <IconUpload size={16} stroke={1.75} />
-        Novo modelo
-      </button>
     </header>
   );
 }
