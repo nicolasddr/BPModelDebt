@@ -34,6 +34,45 @@ Regras:
 - Se o modelo não tiver nenhum anti-padrão, devolva findings vazio. Não invente ocorrências para preencher a resposta.
 - Escreva em português do Brasil.`;
 
+const STAGE2_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica dívidas técnicas de modelagem: decisões que deixam o modelo utilizável hoje, mas cobram um custo de manutenção e entendimento depois.
+
+Catálogo — use exatamente um destes valores no campo category:
+
+atividade
+- Tarefa deveria ser um subprocesso
+- Subprocesso deveria ser uma tarefa
+
+participantes
+- Não representar os atores do processo e suas respectivas responsabilidades (as atividades que cada um executa)
+
+modelagem
+- Modelo com granularidade errada (muito ou pouco detalhado)
+- Modelo utiliza notação pouco conhecida (não é BPMN)
+- Não representar o fluxo e o tratamento de exceções
+- Não representar todas as decisões e loops do processo
+- Não modelar partes do processo (privado)
+- Não decompor as atividades do processo, dificultando a legibilidade
+
+dados-mensagens
+- Modelo mostra o fluxo de informações, mas não define o que é essa informação: fluxos de mensagem, objetos de dados ou tarefas de serviço sem especificação do conteúdo ou da estrutura dos dados envolvidos
+
+Regras:
+- Dívida técnica não é erro de sintaxe. Fluxo incorreto, rótulo inapropriado, nome genérico de pool e elemento desconectado são problemas de qualidade, tratados em outro estágio — não os reporte aqui.
+- Reporte apenas ocorrências que você consegue ancorar em um elemento presente no XML.
+- bpmn_element.id deve ser o valor exato do atributo id desse elemento. Nunca invente um id.
+- bpmn_element.name é o atributo name do elemento e bpmn_element.type é o nome da tag (ex.: bpmn:Task). Use null quando não existirem.
+- reference deve ser "Categoria: " seguido do mesmo valor usado em category.
+- stage é sempre 2.
+- description deve dizer qual custo futuro aquela decisão gera, não apenas o que está faltando.
+- recommendation é uma frase curta e imperativa dizendo o que corrigir.
+- Se o modelo não tiver nenhuma dívida, devolva findings vazio. Não invente ocorrências para preencher a resposta.
+- Escreva em português do Brasil.`;
+
+const PROMPTS: Record<1 | 2, string> = {
+  1: STAGE1_PROMPT,
+  2: STAGE2_PROMPT,
+};
+
 let client: OpenAI | null = null;
 
 function getClient(): OpenAI {
@@ -62,20 +101,21 @@ function toFailure(erro: unknown): StageResult {
   };
 }
 
-export async function runStage1(xml: string): Promise<StageResult> {
+async function runStage(stage: 1 | 2, xml: string): Promise<StageResult> {
   const run: StageRun = { llm: MODEL, promptVersion: PROMPT_VERSION };
+  const tag = `[stage${stage}]`;
 
   try {
     const completion = await getClient().chat.completions.parse({
       model: MODEL,
       messages: [
-        { role: "system", content: STAGE1_PROMPT },
+        { role: "system", content: PROMPTS[stage] },
         { role: "user", content: xml },
       ],
       response_format: zodResponseFormat(StageResponseSchema, "stage_response"),
     });
 
-    console.log("[stage1]", MODEL, completion.usage);
+    console.log(tag, MODEL, completion.usage);
 
     const message = completion.choices[0]?.message;
 
@@ -93,7 +133,15 @@ export async function runStage1(xml: string): Promise<StageResult> {
     return { ok: true, run, findings: message.parsed.findings };
   } catch (erro) {
     const falha = toFailure(erro);
-    console.error("[stage1]", falha);
+    console.error(tag, falha);
     return falha;
   }
+}
+
+export async function runStage1(xml: string): Promise<StageResult> {
+  return runStage(1, xml);
+}
+
+export async function runStage2(xml: string): Promise<StageResult> {
+  return runStage(2, xml);
 }
