@@ -1,8 +1,8 @@
 import { IconCheck, IconCircleCheck, IconLoader2 } from "@tabler/icons-react";
 
-type StageStatus =
+export type StageStatus =
   | { state: "ok"; count: number }
-  | { state: "running"; progress: number };
+  | { state: "running" };
 
 export function StageCard({
   title,
@@ -29,7 +29,8 @@ export function StageCard({
         {status.state === "ok" ? (
           <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-ok">
             <IconCircleCheck size={14} stroke={1.75} />
-            Concluído · {status.count} ocorrências
+            Concluído · {status.count}{" "}
+            {status.count === 1 ? "ocorrência" : "ocorrências"}
           </div>
         ) : (
           <>
@@ -37,11 +38,12 @@ export function StageCard({
               <IconLoader2 size={14} stroke={1.75} className="animate-spin" />
               Analisando…
             </div>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-s1">
-              <span
-                className="block h-full bg-run"
-                style={{ width: `${status.progress}%` }}
-              />
+            <div
+              role="progressbar"
+              aria-label={`${title} — analisando`}
+              className="mt-2 h-1 overflow-hidden rounded-full bg-s1"
+            >
+              <span className="block h-full w-[30%] animate-indeterminate rounded-full bg-run" />
             </div>
           </>
         )}

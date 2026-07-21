@@ -1,12 +1,18 @@
 "use client";
 
 import { IconFileExport, IconUpload } from "@tabler/icons-react";
-import { useActionState, useState } from "react";
-import { analyzeModel } from "@/app/actions";
+import { useState } from "react";
+import { runStage1, runStage2, uploadModel } from "@/app/actions";
 import { FindingsList } from "@/components/FindingsList";
 import { ModelHeader } from "@/components/ModelHeader";
 import { PipelinePanel } from "@/components/PipelinePanel";
-import { mockFindings } from "@/mock/findings";
+import type { Finding } from "@/lib/schema";
+
+type Analysis = {
+  filename: string;
+  stage1: Finding[] | null;
+  stage2: Finding[] | null;
+};
 
 export function Analyzer() {
   const [nonce, setNonce] = useState(0);
@@ -19,16 +25,40 @@ export function Analyzer() {
 }
 
 function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
-  const [state, formAction, pending] = useActionState(analyzeModel, {
-    status: "idle",
-  });
-
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [filename, setFilename] = useState<string | null>(null);
 
-  if (state.status !== "ready") {
+  async function analisar(formData: FormData) {
+    setError(null);
+    setUploading(true);
+
+    const upload = await uploadModel(formData);
+
+    if (!upload.ok) {
+      setUploading(false);
+      setError(upload.message);
+      return;
+    }
+
+    const { filename: nome, xml } = upload;
+    setAnalysis({ filename: nome, stage1: null, stage2: null });
+
+    const findings1 = await runStage1(xml);
+    setAnalysis({ filename: nome, stage1: findings1, stage2: null });
+
+    const findings2 = await runStage2(xml);
+    setAnalysis({ filename: nome, stage1: findings1, stage2: findings2 });
+  }
+
+  if (analysis === null) {
     return (
       <form
-        action={formAction}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void analisar(new FormData(e.currentTarget));
+        }}
         className="mx-auto mt-16 max-w-[440px] rounded-xl border border-border bg-s2 px-6 py-8 text-center"
       >
         <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-[10px] border border-border bg-s1 text-ink-2">
@@ -56,48 +86,45 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
           </span>
         </div>
 
-        {state.status === "error" && (
+        {error && (
           <p role="alert" className="mt-3 text-[13px] text-pink">
-            {state.message}
+            {error}
           </p>
         )}
 
         <button
           type="submit"
-          disabled={pending}
+          disabled={uploading}
           className="mt-5 inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
-          {pending ? "Lendo…" : "Analisar"}
+          {uploading ? "Lendo…" : "Analisar"}
         </button>
       </form>
     );
   }
 
+  const running = analysis.stage1 === null || analysis.stage2 === null;
+
   return (
     <>
-      <ModelHeader
-        meta={{
-          filename: state.filename,
-          atividades: 0,
-          gateways: 0,
-          pools: 0,
-        }}
-      />
-      <PipelinePanel />
-      <FindingsList findings={mockFindings} />
+      <ModelHeader filename={analysis.filename} />
+      <PipelinePanel stage1={analysis.stage1} stage2={analysis.stage2} />
+      <FindingsList stage1={analysis.stage1} stage2={analysis.stage2} />
 
       <div className="mt-5 flex justify-end gap-2.5">
         <button
           type="button"
           onClick={onNovoModelo}
-          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-border-strong bg-transparent px-3.5 text-[13px] text-ink hover:bg-s1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          disabled={running}
+          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-border-strong bg-transparent px-3.5 text-[13px] text-ink hover:bg-s1 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <IconUpload size={16} stroke={1.75} />
           Novo modelo
         </button>
         <button
           type="button"
-          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          disabled={running}
+          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           <IconFileExport size={16} stroke={1.75} />
           Exportar relatório

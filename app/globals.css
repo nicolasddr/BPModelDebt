@@ -80,6 +80,17 @@
   --color-gray: var(--gray);
 
   --radius-DEFAULT: var(--radius);
+
+  --animate-indeterminate: indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
 }
 
 body {

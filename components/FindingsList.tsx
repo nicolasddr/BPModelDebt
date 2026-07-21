@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { FindingCard } from "@/components/FindingCard";
 import { WaitingPlaceholder } from "@/components/WaitingPlaceholder";
 import type { Finding } from "@/lib/schema";
@@ -13,11 +12,9 @@ const STAGE_META: Record<StageId, { label: string; badge: string }> = {
 function StageSection({
   stage,
   findings,
-  children,
 }: {
   stage: StageId;
-  findings: Finding[];
-  children?: ReactNode;
+  findings: Finding[] | null;
 }) {
   const meta = STAGE_META[stage];
 
@@ -30,9 +27,13 @@ function StageSection({
           {stage}
         </span>
         <span className="text-[13px] font-medium">{meta.label}</span>
-        <span className="text-xs text-ink-3">· {findings.length}</span>
+        {findings && <span className="text-xs text-ink-3">· {findings.length}</span>}
       </div>
-      {findings.length > 0 ? (
+      {findings === null ? (
+        <WaitingPlaceholder>
+          {`Aguardando conclusão do estágio ${stage}...`}
+        </WaitingPlaceholder>
+      ) : findings.length > 0 ? (
         findings.map((finding) => (
           <FindingCard key={finding.bpmn_element.id} finding={finding} />
         ))
@@ -41,27 +42,30 @@ function StageSection({
           Nenhuma ocorrência neste estágio.
         </p>
       )}
-      {children}
     </section>
   );
 }
 
-export function FindingsList({ findings }: { findings: Finding[] }) {
-  const stage1 = findings.filter((f) => f.stage === 1);
-  const stage2 = findings.filter((f) => f.stage === 2);
+export function FindingsList({
+  stage1,
+  stage2,
+}: {
+  stage1: Finding[] | null;
+  stage2: Finding[] | null;
+}) {
+  const running = stage1 === null || stage2 === null;
+  const total = (stage1?.length ?? 0) + (stage2?.length ?? 0);
 
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
         <span className="text-[15px] font-medium">Ocorrências</span>
-        <span className="text-xs text-ink-3">{findings.length} encontradas</span>
+        <span className="text-xs text-ink-3">
+          {running ? "Analisando…" : `${total} encontradas`}
+        </span>
       </div>
       <StageSection stage={1} findings={stage1} />
-      <StageSection stage={2} findings={stage2}>
-        <WaitingPlaceholder>
-          Aguardando conclusão do estágio 2...
-        </WaitingPlaceholder>
-      </StageSection>
+      <StageSection stage={2} findings={stage2} />
     </div>
   );
 }

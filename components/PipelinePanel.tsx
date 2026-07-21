@@ -1,6 +1,18 @@
-import { StageCard } from "@/components/StageCard";
+import { StageCard, type StageStatus } from "@/components/StageCard";
+import type { Finding } from "@/lib/schema";
 
-export function PipelinePanel() {
+const statusOf = (findings: Finding[] | null): StageStatus =>
+  findings === null
+    ? { state: "running" }
+    : { state: "ok", count: findings.length };
+
+export function PipelinePanel({
+  stage1,
+  stage2,
+}: {
+  stage1: Finding[] | null;
+  stage2: Finding[] | null;
+}) {
   return (
     <div className="mb-6 overflow-hidden rounded-xl border border-border bg-s2">
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
@@ -11,13 +23,10 @@ export function PipelinePanel() {
         <div className="border-b border-border sm:border-r sm:border-b-0">
           <StageCard
             title="1 · Qualidade e anti-padrões"
-            status={{ state: "ok", count: 3 }}
+            status={statusOf(stage1)}
           />
         </div>
-        <StageCard
-          title="2 · Dívidas técnicas"
-          status={{ state: "running", progress: 55 }}
-        />
+        <StageCard title="2 · Dívidas técnicas" status={statusOf(stage2)} />
       </div>
     </div>
   );

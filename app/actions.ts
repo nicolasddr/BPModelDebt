@@ -1,28 +1,33 @@
 "use server";
 
-export type AnalyzeState =
-  | { status: "idle" }
-  | { status: "error"; message: string }
-  | { status: "ready"; filename: string; size: number; xml: string };
+import * as analysis from "@/lib/analysis";
+import type { Finding } from "@/lib/schema";
+
+export type UploadResult =
+  | { ok: false; message: string }
+  | { ok: true; filename: string; xml: string };
 
 const ACCEPTED = [".bpmn", ".xml"];
 
-export async function analyzeModel(
-  _prev: AnalyzeState,
-  formData: FormData,
-): Promise<AnalyzeState> {
+export async function uploadModel(formData: FormData): Promise<UploadResult> {
   const file = formData.get("model");
 
   if (!(file instanceof File) || file.size === 0) {
-    return { status: "error", message: "Selecione um arquivo .bpmn ou .xml." };
+    return { ok: false, message: "Selecione um arquivo .bpmn ou .xml." };
   }
 
   const nome = file.name.toLowerCase();
   if (!ACCEPTED.some((ext) => nome.endsWith(ext))) {
-    return { status: "error", message: "Formato inválido — use .bpmn ou .xml." };
+    return { ok: false, message: "Formato inválido — use .bpmn ou .xml." };
   }
 
-  const xml = await file.text();
+  return { ok: true, filename: file.name, xml: await file.text() };
+}
 
-  return { status: "ready", filename: file.name, size: file.size, xml };
+export async function runStage1(xml: string): Promise<Finding[]> {
+  return analysis.runStage1(xml);
+}
+
+export async function runStage2(xml: string): Promise<Finding[]> {
+  return analysis.runStage2(xml);
 }
