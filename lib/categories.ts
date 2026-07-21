@@ -1,4 +1,8 @@
-import type { FindingCategory } from "@/lib/schema";
+import {
+  Stage2CategorySchema,
+  type FindingCategory,
+  type Stage2Category,
+} from "@/lib/vocab";
 
 export type CategoryColor = "amber" | "pink" | "teal";
 
@@ -7,16 +11,16 @@ export type CategoryInfo = {
   color: CategoryColor;
 };
 
-const CATEGORY_LABELS: Record<string, CategoryInfo> = {
+const STAGE1_INFO: CategoryInfo = { label: "Modelagem", color: "amber" };
+
+const STAGE2_INFO: Record<Stage2Category, CategoryInfo> = {
   atividade: { label: "Atividade", color: "teal" },
   participantes: { label: "Participantes", color: "pink" },
   modelagem: { label: "Modelagem", color: "amber" },
   "dados-mensagens": { label: "Dados e mensagens", color: "teal" },
-  "AP-02": { label: "Modelagem", color: "amber" },
-  "AP-04": { label: "Modelagem", color: "amber" },
-  "AP-07": { label: "Modelagem", color: "amber" },
 };
 
 export function getCategoryInfo(category: FindingCategory): CategoryInfo {
-  return CATEGORY_LABELS[category] ?? { label: category, color: "teal" };
+  const stage2 = Stage2CategorySchema.safeParse(category);
+  return stage2.success ? STAGE2_INFO[stage2.data] : STAGE1_INFO;
 }

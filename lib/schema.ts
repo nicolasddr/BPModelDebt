@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { FindingCategorySchema } from "@/lib/vocab";
+
 export type ModelMeta = {
   filename: string;
   atividades: number;
@@ -5,30 +8,26 @@ export type ModelMeta = {
   pools: number;
 };
 
-// Estágio 1
-export type Stage1Category = `AP-${string}`;
+export const BpmnElementRefSchema = z.object({
+  id: z.string(),
+  name: z.string().nullable(),
+  type: z.string().nullable(),
+});
 
-// Estágio 2
-export type Stage2Category =
-  | "atividade"
-  | "participantes"
-  | "modelagem"
-  | "dados-mensagens";
+export const FindingSchema = z.object({
+  stage: z.literal([1, 2]),
+  category: FindingCategorySchema,
+  title: z.string(),
+  description: z.string(),
+  bpmn_element: BpmnElementRefSchema,
+  reference: z.string(),
+  recommendation: z.string(),
+});
 
-export type FindingCategory = Stage1Category | Stage2Category;
+export const StageResponseSchema = z.object({
+  findings: z.array(FindingSchema),
+});
 
-export type BpmnElementRef = {
-  id: string;
-  name?: string;
-  type?: string;
-};
-
-export type Finding = {
-  stage: 1 | 2;
-  category: FindingCategory;
-  title: string;
-  description: string;
-  bpmn_element: BpmnElementRef;
-  reference: string;
-  recommendation: string;
-};
+export type BpmnElementRef = z.infer<typeof BpmnElementRefSchema>;
+export type Finding = z.infer<typeof FindingSchema>;
+export type StageResponse = z.infer<typeof StageResponseSchema>;
