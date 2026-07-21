@@ -1,7 +1,13 @@
 import { IconFileTypeXml, IconSparkles } from "@tabler/icons-react";
+import type { StageRun } from "@/lib/schema";
 
-
-export function ModelHeader({ filename }: { filename: string }) {
+export function ModelHeader({
+  filename,
+  run,
+}: {
+  filename: string;
+  run: StageRun | null;
+}) {
   return (
     <div className="mb-[22px] flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-3.5">
@@ -10,10 +16,16 @@ export function ModelHeader({ filename }: { filename: string }) {
         </div>
         <h1 className="text-[19px] font-medium">{filename}</h1>
       </div>
-      <span className="rounded border border-accent-border bg-accent-bg px-[11px] py-[5px] text-xs text-accent">
-        <IconSparkles size={13} stroke={1.75} className="mr-1 inline -translate-y-px" />
-        Opus 4.8 · prompt v2.1
-      </span>
+      {run && (
+        <span className="rounded border border-accent-border bg-accent-bg px-[11px] py-[5px] text-xs text-accent">
+          <IconSparkles
+            size={13}
+            stroke={1.75}
+            className="mr-1 inline -translate-y-px"
+          />
+          {run.llm} · prompt {run.promptVersion}
+        </span>
+      )}
     </div>
   );
 }

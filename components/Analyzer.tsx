@@ -6,13 +6,20 @@ import { runStage1, runStage2, uploadModel } from "@/app/actions";
 import { FindingsList } from "@/components/FindingsList";
 import { ModelHeader } from "@/components/ModelHeader";
 import { PipelinePanel } from "@/components/PipelinePanel";
-import type { Finding } from "@/lib/schema";
+import type { StageResult, StageRun } from "@/lib/schema";
 
 type Analysis = {
   filename: string;
-  stage1: Finding[] | null;
-  stage2: Finding[] | null;
+  stage1: StageResult | null;
+  stage2: StageResult | null;
 };
+
+function runOf(...stages: (StageResult | null)[]): StageRun | null {
+  for (const stage of stages) {
+    if (stage?.ok) return stage.run;
+  }
+  return null;
+}
 
 export function Analyzer() {
   const [nonce, setNonce] = useState(0);
@@ -45,11 +52,11 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
     const { filename: nome, xml } = upload;
     setAnalysis({ filename: nome, stage1: null, stage2: null });
 
-    const findings1 = await runStage1(xml);
-    setAnalysis({ filename: nome, stage1: findings1, stage2: null });
+    const result1 = await runStage1(xml);
+    setAnalysis({ filename: nome, stage1: result1, stage2: null });
 
-    const findings2 = await runStage2(xml);
-    setAnalysis({ filename: nome, stage1: findings1, stage2: findings2 });
+    const result2 = await runStage2(xml);
+    setAnalysis({ filename: nome, stage1: result1, stage2: result2 });
   }
 
   if (analysis === null) {
@@ -107,7 +114,10 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
 
   return (
     <>
-      <ModelHeader filename={analysis.filename} />
+      <ModelHeader
+        filename={analysis.filename}
+        run={runOf(analysis.stage1, analysis.stage2)}
+      />
       <PipelinePanel stage1={analysis.stage1} stage2={analysis.stage2} />
       <FindingsList stage1={analysis.stage1} stage2={analysis.stage2} />
 

@@ -1,6 +1,6 @@
 import { FindingCard } from "@/components/FindingCard";
 import { WaitingPlaceholder } from "@/components/WaitingPlaceholder";
-import type { Finding } from "@/lib/schema";
+import { STAGE_FAILURE_LABEL, type StageResult } from "@/lib/schema";
 
 type StageId = 1 | 2;
 
@@ -11,10 +11,10 @@ const STAGE_META: Record<StageId, { label: string; badge: string }> = {
 
 function StageSection({
   stage,
-  findings,
+  result,
 }: {
   stage: StageId;
-  findings: Finding[] | null;
+  result: StageResult | null;
 }) {
   const meta = STAGE_META[stage];
 
@@ -27,14 +27,30 @@ function StageSection({
           {stage}
         </span>
         <span className="text-[13px] font-medium">{meta.label}</span>
-        {findings && <span className="text-xs text-ink-3">· {findings.length}</span>}
+        {result?.ok && (
+          <span className="text-xs text-ink-3">· {result.findings.length}</span>
+        )}
       </div>
-      {findings === null ? (
+      {result === null ? (
         <WaitingPlaceholder>
           {`Aguardando conclusão do estágio ${stage}...`}
         </WaitingPlaceholder>
-      ) : findings.length > 0 ? (
-        findings.map((finding) => (
+      ) : !result.ok ? (
+        <div
+          role="alert"
+          className="rounded-[10px] border border-pink-bg bg-pink-bg px-4 py-3.5 text-[13px] text-pink-ink"
+        >
+          <span className="font-medium">
+            {STAGE_FAILURE_LABEL[result.reason]}
+          </span>
+          {result.detail && (
+            <span className="mt-0.5 block text-xs opacity-80">
+              {result.detail}
+            </span>
+          )}
+        </div>
+      ) : result.findings.length > 0 ? (
+        result.findings.map((finding) => (
           <FindingCard key={finding.bpmn_element.id} finding={finding} />
         ))
       ) : (
@@ -50,11 +66,15 @@ export function FindingsList({
   stage1,
   stage2,
 }: {
-  stage1: Finding[] | null;
-  stage2: Finding[] | null;
+  stage1: StageResult | null;
+  stage2: StageResult | null;
 }) {
-  const running = stage1 === null || stage2 === null;
-  const total = (stage1?.length ?? 0) + (stage2?.length ?? 0);
+  const stages = [stage1, stage2];
+  const running = stages.some((stage) => stage === null);
+  const total = stages.reduce(
+    (soma, stage) => soma + (stage?.ok ? stage.findings.length : 0),
+    0,
+  );
 
   return (
     <div>
@@ -64,8 +84,8 @@ export function FindingsList({
           {running ? "Analisando…" : `${total} encontradas`}
         </span>
       </div>
-      <StageSection stage={1} findings={stage1} />
-      <StageSection stage={2} findings={stage2} />
+      <StageSection stage={1} result={stage1} />
+      <StageSection stage={2} result={stage2} />
     </div>
   );
 }

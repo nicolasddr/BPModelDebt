@@ -1,7 +1,7 @@
 "use server";
 
 import * as analysis from "@/lib/analysis";
-import type { Finding } from "@/lib/schema";
+import type { StageResult } from "@/lib/schema";
 
 export type UploadResult =
   | { ok: false; message: string }
@@ -24,10 +24,10 @@ export async function uploadModel(formData: FormData): Promise<UploadResult> {
   return { ok: true, filename: file.name, xml: await file.text() };
 }
 
-export async function runStage1(xml: string): Promise<Finding[]> {
+export async function runStage1(xml: string): Promise<StageResult> {
   return analysis.runStage1(xml);
 }
 
-export async function runStage2(xml: string): Promise<Finding[]> {
+export async function runStage2(xml: string): Promise<StageResult> {
   return analysis.runStage2(xml);
 }
