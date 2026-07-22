@@ -50,8 +50,8 @@ function StageSection({
           )}
         </div>
       ) : result.findings.length > 0 ? (
-        result.findings.map((finding) => (
-          <FindingCard key={finding.bpmn_element.id} finding={finding} />
+        result.findings.map((finding, index) => (
+          <FindingCard key={index} finding={finding} />
         ))
       ) : (
         <p className="rounded-[10px] border border-dashed border-border px-4 py-3.5 text-[13px] text-ink-3">
