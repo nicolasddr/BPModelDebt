@@ -6,7 +6,7 @@ type StageId = 1 | 2;
 
 const STAGE_META: Record<StageId, { label: string; badge: string }> = {
   1: { label: "Anti-padrões", badge: "bg-ok-bg text-ok" },
-  2: { label: "Dívidas técnicas", badge: "bg-run-bg text-run" },
+  2: { label: "Dívidas técnicas", badge: "bg-ok-bg text-ok" },
 };
 
 function StageSection({
