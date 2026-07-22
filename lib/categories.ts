@@ -11,12 +11,12 @@ export type CategoryInfo = {
   color: CategoryColor;
 };
 
-const STAGE1_INFO: CategoryInfo = { label: "Modelagem", color: "amber" };
+const STAGE1_INFO: CategoryInfo = { label: "Modelagem", color: "teal" };
 
 const STAGE2_INFO: Record<Stage2Category, CategoryInfo> = {
   atividade: { label: "Atividade", color: "teal" },
-  participantes: { label: "Participantes", color: "pink" },
-  modelagem: { label: "Modelagem", color: "amber" },
+  participantes: { label: "Participantes", color: "teal" },
+  modelagem: { label: "Modelagem", color: "teal" },
   "dados-mensagens": { label: "Dados e mensagens", color: "teal" },
 };
 
