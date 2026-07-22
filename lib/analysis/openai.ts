@@ -7,7 +7,7 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import { ZodError } from "zod";
 import { StageResponseSchema, type StageResult, type StageRun } from "@/lib/schema";
 
-const MODEL = process.env.OPENAI_MODEL ?? "gpt-4o-2024-08-06";
+const MODEL = process.env.OPENAI_MODEL ?? "gpt-5.6-terra";
 const PROMPT_VERSION = "v0.0";
 
 const STAGE1_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica anti-padrões de modelagem do catálogo de Dias (2018).
