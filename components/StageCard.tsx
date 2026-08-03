@@ -42,7 +42,7 @@ export function StageCard({
       <div className="flex-1">
         <div className="flex items-center gap-1.5">
           <span className="text-[13px] font-medium">{title}</span>
-          {catalog}
+          {catalog && <span className="flex translate-y-px">{catalog}</span>}
         </div>
         {status.state === "ok" && (
           <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-ok">

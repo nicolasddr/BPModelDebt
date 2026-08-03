@@ -84,7 +84,7 @@ function TabButton({
       role="tab"
       aria-selected={active}
       onClick={onClick}
-      className={`-mb-px flex items-center gap-2 border-b-2 px-1 pb-2.5 text-[13px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+      className={`-mb-px flex cursor-pointer items-center gap-2 border-b-2 px-1 pb-2.5 text-[13px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
         active
           ? "border-accent text-ink"
           : "border-transparent text-ink-3 hover:text-ink-2"
@@ -135,7 +135,9 @@ export function FindingsList({
             active={active === 1}
             onClick={() => setActive(1)}
           />
-          <AntipatternCatalog />
+          <span className="flex pb-2.5">
+            <AntipatternCatalog />
+          </span>
         </div>
         <div className="flex items-center gap-1.5">
           <TabButton
@@ -144,7 +146,9 @@ export function FindingsList({
             active={active === 2}
             onClick={() => setActive(2)}
           />
-          <TechDebtCatalog />
+          <span className="flex pb-2.5">
+            <TechDebtCatalog />
+          </span>
         </div>
       </div>
 
