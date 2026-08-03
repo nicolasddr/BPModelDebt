@@ -1,15 +1,5 @@
-import { Analyzer } from "@/components/Analyzer";
-import { Footer } from "@/components/Footer";
-import { Topbar } from "@/components/Topbar";
+import { Welcome } from "@/components/Welcome";
 
 export default function Home() {
-  return (
-    <>
-      <Topbar />
-      <main className="mx-auto w-full max-w-[760px] px-[22px] pt-7 pb-[60px]">
-        <Analyzer />
-      </main>
-      <Footer />
-    </>
-  );
+  return <Welcome />;
 }
