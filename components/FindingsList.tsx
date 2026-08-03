@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FindingCard } from "@/components/FindingCard";
+import { AntipatternCatalog, TechDebtCatalog } from "@/components/catalogs";
 import { WaitingPlaceholder } from "@/components/WaitingPlaceholder";
 import { STAGE_FAILURE_LABEL, type StageResult } from "@/lib/schema";
 
@@ -127,18 +128,24 @@ export function FindingsList({
         role="tablist"
         className="mb-5 flex gap-5 border-b border-border"
       >
-        <TabButton
-          stage={1}
-          result={stage1}
-          active={active === 1}
-          onClick={() => setActive(1)}
-        />
-        <TabButton
-          stage={2}
-          result={stage2}
-          active={active === 2}
-          onClick={() => setActive(2)}
-        />
+        <div className="flex items-center gap-1.5">
+          <TabButton
+            stage={1}
+            result={stage1}
+            active={active === 1}
+            onClick={() => setActive(1)}
+          />
+          <AntipatternCatalog />
+        </div>
+        <div className="flex items-center gap-1.5">
+          <TabButton
+            stage={2}
+            result={stage2}
+            active={active === 2}
+            onClick={() => setActive(2)}
+          />
+          <TechDebtCatalog />
+        </div>
       </div>
 
       <StageBody stage={active} result={stages[active]} />

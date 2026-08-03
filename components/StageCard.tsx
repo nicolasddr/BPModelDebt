@@ -4,6 +4,7 @@ import {
   IconCircleCheck,
   IconLoader2,
 } from "@tabler/icons-react";
+import type { ReactNode } from "react";
 
 export type StageStatus =
   | { state: "ok"; count: number }
@@ -19,9 +20,11 @@ const TONE: Record<StageStatus["state"], string> = {
 export function StageCard({
   title,
   status,
+  catalog,
 }: {
   title: string;
   status: StageStatus;
+  catalog?: ReactNode;
 }) {
   return (
     <div className="flex flex-1 gap-3 p-4">
@@ -37,7 +40,10 @@ export function StageCard({
         )}
       </div>
       <div className="flex-1">
-        <div className="text-[13px] font-medium">{title}</div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[13px] font-medium">{title}</span>
+          {catalog}
+        </div>
         {status.state === "ok" && (
           <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-ok">
             <IconCircleCheck size={14} stroke={1.75} />

@@ -1,3 +1,4 @@
+import { AntipatternCatalog, TechDebtCatalog } from "@/components/catalogs";
 import { StageCard, type StageStatus } from "@/components/StageCard";
 import { STAGE_FAILURE_LABEL, type StageResult } from "@/lib/schema";
 
@@ -26,9 +27,14 @@ export function PipelinePanel({
           <StageCard
             title="1 · Anti-padrões"
             status={statusOf(stage1)}
+            catalog={<AntipatternCatalog />}
           />
         </div>
-        <StageCard title="2 · Dívidas técnicas" status={statusOf(stage2)} />
+        <StageCard
+          title="2 · Dívidas técnicas"
+          status={statusOf(stage2)}
+          catalog={<TechDebtCatalog />}
+        />
       </div>
     </div>
   );
