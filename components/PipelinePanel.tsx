@@ -24,7 +24,7 @@ export function PipelinePanel({
       <div className="grid grid-cols-1 sm:grid-cols-2">
         <div className="border-b border-border sm:border-r sm:border-b-0">
           <StageCard
-            title="1 · Qualidade e anti-padrões"
+            title="1 · Anti-padrões"
             status={statusOf(stage1)}
           />
         </div>
