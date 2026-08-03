@@ -1,4 +1,4 @@
-import { IconFileTypeXml, IconSparkles } from "@tabler/icons-react";
+import { IconFileTypeXml } from "@tabler/icons-react";
 import type { StageRun } from "@/lib/schema";
 
 export function ModelHeader({
@@ -18,12 +18,7 @@ export function ModelHeader({
       </div>
       {run && (
         <span className="rounded border border-accent-border bg-accent-bg px-[11px] py-[5px] text-xs text-accent">
-          <IconSparkles
-            size={13}
-            stroke={1.75}
-            className="mr-1 inline -translate-y-px"
-          />
-          {run.llm} · prompt {run.promptVersion}
+          {run.llm}
         </span>
       )}
     </div>
