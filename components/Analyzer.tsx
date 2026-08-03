@@ -6,6 +6,7 @@ import { runStage1, runStage2, uploadModel } from "@/app/actions";
 import { FindingsList } from "@/components/FindingsList";
 import { ModelHeader } from "@/components/ModelHeader";
 import { PipelinePanel } from "@/components/PipelinePanel";
+import { findingsToCsv, flattenFindings } from "@/lib/export/csv";
 import type { StageResult, StageRun } from "@/lib/schema";
 
 type Analysis = {
@@ -19,6 +20,21 @@ function runOf(...stages: (StageResult | null)[]): StageRun | null {
     if (stage?.ok) return stage.run;
   }
   return null;
+}
+
+function csvFilename(modelFilename: string): string {
+  const base = modelFilename.replace(/\.[^.]+$/, "");
+  return `${base}-analise.csv`;
+}
+
+function downloadCsv(filename: string, content: string): void {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
 export function Analyzer() {
@@ -111,6 +127,12 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
   }
 
   const running = analysis.stage1 === null || analysis.stage2 === null;
+  const findings = flattenFindings(analysis.stage1, analysis.stage2);
+  const modelFilename = analysis.filename;
+
+  function exportar() {
+    downloadCsv(csvFilename(modelFilename), findingsToCsv(findings));
+  }
 
   return (
     <>
@@ -133,11 +155,12 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
         </button>
         <button
           type="button"
-          disabled={running}
+          onClick={exportar}
+          disabled={running || findings.length === 0}
           className="inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           <IconFileExport size={16} stroke={1.75} />
-          Exportar relatório
+          Exportar .csv
         </button>
       </div>
     </>
