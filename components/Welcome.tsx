@@ -4,7 +4,7 @@ import {
   IconLayoutGrid,
   IconStack2,
 } from "@tabler/icons-react";
-import Link from "next/link";
+import { Button } from "@/components/Button";
 import { AntipatternCatalog, TechDebtCatalog } from "@/components/catalogs";
 
 export function Welcome() {
@@ -53,13 +53,10 @@ export function Welcome() {
         </div>
       </div>
 
-      <Link
-        href="/analise"
-        className="mt-8 inline-flex h-[38px] items-center gap-1.5 rounded border border-accent bg-accent px-5 text-[14px] text-white hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-      >
+      <Button href="/analise" size="md" className="mt-8">
         Iniciar
         <IconArrowRight size={17} stroke={1.75} />
-      </Link>
+      </Button>
     </div>
   );
 }

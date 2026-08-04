@@ -3,6 +3,7 @@
 import { IconFileExport, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
 import { runStage1, runStage2, uploadModel } from "@/app/actions";
+import { Button } from "@/components/Button";
 import { FindingsList } from "@/components/FindingsList";
 import { ModelHeader } from "@/components/ModelHeader";
 import { PipelinePanel } from "@/components/PipelinePanel";
@@ -115,13 +116,9 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
           </p>
         )}
 
-        <button
-          type="submit"
-          disabled={uploading}
-          className="mt-5 inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        >
+        <Button type="submit" disabled={uploading} className="mt-5">
           {uploading ? "Lendo…" : "Analisar"}
-        </button>
+        </Button>
       </form>
     );
   }
@@ -144,24 +141,14 @@ function AnalyzerInner({ onNovoModelo }: { onNovoModelo: () => void }) {
       <FindingsList stage1={analysis.stage1} stage2={analysis.stage2} />
 
       <div className="mt-5 flex justify-end gap-2.5">
-        <button
-          type="button"
-          onClick={onNovoModelo}
-          disabled={running}
-          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-border-strong bg-transparent px-3.5 text-[13px] text-ink hover:bg-s1 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        >
+        <Button type="button" variant="secondary" onClick={onNovoModelo} disabled={running}>
           <IconUpload size={16} stroke={1.75} />
           Novo modelo
-        </button>
-        <button
-          type="button"
-          onClick={exportar}
-          disabled={running || findings.length === 0}
-          className="inline-flex h-[34px] items-center gap-1.5 rounded border border-accent bg-accent px-3.5 text-[13px] text-white hover:bg-accent/90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        >
+        </Button>
+        <Button type="button" onClick={exportar} disabled={running || findings.length === 0}>
           <IconFileExport size={16} stroke={1.75} />
           Exportar .csv
-        </button>
+        </Button>
       </div>
     </>
   );
