@@ -27,11 +27,13 @@ export function TechDebtCatalog() {
             <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-3">
               {group.label}
             </p>
-            <ul className="space-y-1.5 text-[13px] text-ink-2">
-              {group.items.map((item, index) => (
-                <li key={index} className="flex gap-2">
-                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-border-strong" />
-                  <span>{item}</span>
+            <ul className="space-y-2 text-[13px] text-ink-2">
+              {group.items.map((item) => (
+                <li key={item.code} className="flex gap-2">
+                  <span className="shrink-0 pt-px font-mono text-[11px] text-ink-3">
+                    {item.code}
+                  </span>
+                  <span>{item.text}</span>
                 </li>
               ))}
             </ul>

@@ -8,7 +8,7 @@ import { ZodError } from "zod";
 import { StageResponseSchema, type StageResult, type StageRun } from "@/lib/schema";
 
 const MODEL = process.env.OPENAI_MODEL ?? "gpt-5.6-terra";
-const PROMPT_VERSION = "v0.0";
+const PROMPT_VERSION = "v0.1";
 
 const STAGE1_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica anti-padrões de modelagem do catálogo de Dias (2018).
 
@@ -28,7 +28,6 @@ Regras:
 - Reporte apenas ocorrências que você consegue ancorar em um elemento presente no XML.
 - bpmn_element.id deve ser o valor exato do atributo id desse elemento. Nunca invente um id.
 - bpmn_element.name é o atributo name do elemento e bpmn_element.type é o nome da tag (ex.: bpmn:Task). Use null quando não existirem.
-- reference deve ser "Dias (2018) · AP-XX", com o mesmo código usado em category.
 - stage é sempre 1.
 - recommendation é uma frase curta e imperativa dizendo o que corrigir.
 - Se o modelo não tiver nenhum anti-padrão, devolva findings vazio. Não invente ocorrências para preencher a resposta.
@@ -36,32 +35,31 @@ Regras:
 
 const STAGE2_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica dívidas técnicas de modelagem: decisões que deixam o modelo utilizável hoje, mas cobram um custo de manutenção e entendimento depois.
 
-Catálogo — use exatamente um destes valores no campo category:
+Catálogo — use exatamente estes códigos no campo category:
 
-atividade
-- Tarefa deveria ser um subprocesso
-- Subprocesso deveria ser uma tarefa
+Atividade
+DT-01 Tarefa deveria ser um subprocesso
+DT-02 Subprocesso deveria ser uma tarefa
 
-participantes
-- Não representar os atores do processo e suas respectivas responsabilidades (as atividades que cada um executa)
+Participantes
+DT-03 Não representar os atores do processo e suas respectivas responsabilidades (as atividades que cada um executa)
 
-modelagem
-- Modelo com granularidade errada (muito ou pouco detalhado)
-- Modelo utiliza notação pouco conhecida (não é BPMN)
-- Não representar o fluxo e o tratamento de exceções
-- Não representar todas as decisões e loops do processo
-- Não modelar partes do processo (privado)
-- Não decompor as atividades do processo, dificultando a legibilidade
+Modelagem
+DT-04 Modelo com granularidade errada (muito ou pouco detalhado)
+DT-05 Modelo utiliza notação pouco conhecida (não é BPMN)
+DT-06 Não representar o fluxo e o tratamento de exceções
+DT-07 Não representar todas as decisões e loops do processo
+DT-08 Não modelar partes do processo (privado)
+DT-09 Não decompor as atividades do processo, dificultando a legibilidade
 
-dados-mensagens
-- Modelo mostra o fluxo de informações, mas não define o que é essa informação: fluxos de mensagem, objetos de dados ou tarefas de serviço sem especificação do conteúdo ou da estrutura dos dados envolvidos
+Dados e mensagens
+DT-10 Modelo mostra o fluxo de informações, mas não define o que é essa informação: fluxos de mensagem, objetos de dados ou tarefas de serviço sem especificação do conteúdo ou da estrutura dos dados envolvidos
 
 Regras:
 - Dívida técnica não é erro de sintaxe. Fluxo incorreto, rótulo inapropriado, nome genérico de pool e elemento desconectado são problemas de qualidade, tratados em outro estágio — não os reporte aqui.
 - Reporte apenas ocorrências que você consegue ancorar em um elemento presente no XML.
 - bpmn_element.id deve ser o valor exato do atributo id desse elemento. Nunca invente um id.
 - bpmn_element.name é o atributo name do elemento e bpmn_element.type é o nome da tag (ex.: bpmn:Task). Use null quando não existirem.
-- reference deve ser "Categoria: " seguido do mesmo valor usado em category.
 - stage é sempre 2.
 - description deve dizer qual custo futuro aquela decisão gera, não apenas o que está faltando.
 - recommendation é uma frase curta e imperativa dizendo o que corrigir.

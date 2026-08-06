@@ -14,10 +14,16 @@ export const STAGE1_CATEGORIES = [
 ] as const;
 
 export const STAGE2_CATEGORIES = [
-  "atividade",
-  "participantes",
-  "modelagem",
-  "dados-mensagens",
+  "DT-01",
+  "DT-02",
+  "DT-03",
+  "DT-04",
+  "DT-05",
+  "DT-06",
+  "DT-07",
+  "DT-08",
+  "DT-09",
+  "DT-10",
 ] as const;
 
 export const Stage1CategorySchema = z.enum(STAGE1_CATEGORIES);

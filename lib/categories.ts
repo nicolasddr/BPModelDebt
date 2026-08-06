@@ -1,3 +1,4 @@
+import { TECH_DEBTS } from "@/lib/catalog";
 import {
   Stage2CategorySchema,
   type FindingCategory,
@@ -9,18 +10,30 @@ export type CategoryColor = "amber" | "pink" | "teal";
 export type CategoryInfo = {
   label: string;
   color: CategoryColor;
+  reference: string;
 };
 
-const STAGE1_INFO: CategoryInfo = { label: "Modelagem", color: "teal" };
-
-const STAGE2_INFO: Record<Stage2Category, CategoryInfo> = {
-  atividade: { label: "Atividade", color: "teal" },
-  participantes: { label: "Participantes", color: "teal" },
-  modelagem: { label: "Modelagem", color: "teal" },
-  "dados-mensagens": { label: "Dados e mensagens", color: "teal" },
-};
+function debtGroupLabel(code: Stage2Category): string {
+  const group = TECH_DEBTS.find((g) =>
+    g.items.some((item) => item.code === code),
+  );
+  return group ? group.label : "Dívida técnica";
+}
 
 export function getCategoryInfo(category: FindingCategory): CategoryInfo {
   const stage2 = Stage2CategorySchema.safeParse(category);
-  return stage2.success ? STAGE2_INFO[stage2.data] : STAGE1_INFO;
+
+  if (stage2.success) {
+    return {
+      label: debtGroupLabel(stage2.data),
+      color: "teal",
+      reference: stage2.data,
+    };
+  }
+
+  return {
+    label: "Modelagem",
+    color: "teal",
+    reference: `Dias (2018) · ${category}`,
+  };
 }

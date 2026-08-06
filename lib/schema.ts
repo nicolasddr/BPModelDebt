@@ -20,7 +20,6 @@ export const FindingSchema = z.object({
   title: z.string(),
   description: z.string(),
   bpmn_element: BpmnElementRefSchema,
-  reference: z.string(),
   recommendation: z.string(),
 });
 

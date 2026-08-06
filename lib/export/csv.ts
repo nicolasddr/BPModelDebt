@@ -14,7 +14,7 @@ const COLUMNS: { header: string; value: (finding: Finding) => string }[] = [
   { header: "Descrição", value: (f) => f.description },
   { header: "Elemento BPMN", value: (f) => f.bpmn_element.id },
   { header: "Nome do elemento", value: (f) => f.bpmn_element.name ?? "" },
-  { header: "Referência", value: (f) => f.reference },
+  { header: "Referência", value: (f) => getCategoryInfo(f.category).reference },
   { header: "Recomendação", value: (f) => f.recommendation },
 ];
 

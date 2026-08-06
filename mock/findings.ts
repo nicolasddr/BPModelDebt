@@ -12,12 +12,11 @@ export const mockFindings: Finding[] = [
       name: "Crédito aprovado?",
       type: "bpmn:ExclusiveGateway",
     },
-    reference: "Dias (2018) · AP-04",
     recommendation: "rotular cada fluxo de saída com sua condição",
   },
   {
     stage: 2,
-    category: "participantes",
+    category: "DT-03",
     title: "Responsabilidade ambígua entre pools",
     description:
       'A tarefa "Notificar cliente" aparece sem lane atribuída, com a responsabilidade dividida entre os pools Banco e Analista.',
@@ -26,7 +25,6 @@ export const mockFindings: Finding[] = [
       name: "Notificar cliente",
       type: "bpmn:Task",
     },
-    reference: "Categoria: participantes",
     recommendation: "mover a tarefa para uma única lane responsável",
   },
   {
@@ -40,7 +38,6 @@ export const mockFindings: Finding[] = [
       name: null,
       type: "bpmn:SequenceFlow",
     },
-    reference: "Dias (2018) · AP-07",
     recommendation: "adicionar evento de fim ao ramo",
   },
   {
@@ -54,7 +51,6 @@ export const mockFindings: Finding[] = [
       name: null,
       type: null,
     },
-    reference: "Dias (2018) · AP-02",
     recommendation: "adicionar gateway de junção correspondente à divergência",
   },
 ];
