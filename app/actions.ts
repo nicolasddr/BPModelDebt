@@ -2,23 +2,25 @@
 
 import * as analysis from "@/lib/analysis";
 import type { StageResult } from "@/lib/schema";
+import {
+  hasAcceptedExtension,
+  INVALID_FORMAT_MESSAGE,
+  NO_FILE_MESSAGE,
+} from "@/lib/upload";
 
 export type UploadResult =
   | { ok: false; message: string }
   | { ok: true; filename: string; xml: string };
 
-const ACCEPTED = [".bpmn", ".xml"];
-
 export async function uploadModel(formData: FormData): Promise<UploadResult> {
   const file = formData.get("model");
 
   if (!(file instanceof File) || file.size === 0) {
-    return { ok: false, message: "Selecione um arquivo .bpmn ou .xml." };
+    return { ok: false, message: NO_FILE_MESSAGE };
   }
 
-  const nome = file.name.toLowerCase();
-  if (!ACCEPTED.some((ext) => nome.endsWith(ext))) {
-    return { ok: false, message: "Formato inválido — use .bpmn ou .xml." };
+  if (!hasAcceptedExtension(file.name)) {
+    return { ok: false, message: INVALID_FORMAT_MESSAGE };
   }
 
   return { ok: true, filename: file.name, xml: await file.text() };
