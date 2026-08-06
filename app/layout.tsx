@@ -31,7 +31,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Topbar />
-        <main className="mx-auto w-full max-w-[760px] px-[22px] pt-7 pb-[60px]">
+        <main className="mx-auto flex w-full max-w-[760px] flex-1 flex-col px-[22px] pt-7 pb-[60px]">
           {children}
         </main>
         <Footer />
