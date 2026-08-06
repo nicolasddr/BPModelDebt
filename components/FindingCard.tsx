@@ -45,9 +45,11 @@ export function FindingCard({ finding }: { finding: Finding }) {
                 {finding.bpmn_element.id}
               </code>
             </span>
-            <span className="rounded bg-teal-bg px-1.5 py-px text-teal-ink">
-              {finding.reference}
-            </span>
+            {finding.stage === 1 && (
+              <span className="rounded bg-teal-bg px-1.5 py-px text-teal-ink">
+                {finding.reference}
+              </span>
+            )}
             <span>Correção: {finding.recommendation}</span>
           </div>
         </div>
