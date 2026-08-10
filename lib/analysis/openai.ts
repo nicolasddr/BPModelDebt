@@ -10,7 +10,7 @@ import { StageResponseSchema, type StageResult, type StageRun } from "@/lib/sche
 const MODEL = process.env.OPENAI_MODEL ?? "gpt-5.6-terra";
 const PROMPT_VERSION = "v0.1";
 
-const STAGE1_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica anti-padrões de modelagem do catálogo de Dias (2018).
+const STAGE1_PROMPT = `Você analisa modelos de processo de negócio em BPMN 2.0 (XML) e identifica anti-padrões de modelagem do catálogo de Dias et al. (2019).
 
 Catálogo — use exatamente estes códigos no campo category:
 AP-01 Atividades em uma piscina não estão conectadas

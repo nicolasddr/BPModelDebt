@@ -1,5 +1,9 @@
 import { TECH_DEBTS } from "@/lib/catalog";
 import {
+  ANTIPATTERN_REFERENCE_SHORT,
+  TECHDEBT_REFERENCE_SHORT,
+} from "@/lib/reference";
+import {
   Stage2CategorySchema,
   type FindingCategory,
   type Stage2Category,
@@ -27,13 +31,13 @@ export function getCategoryInfo(category: FindingCategory): CategoryInfo {
     return {
       label: debtGroupLabel(stage2.data),
       color: "teal",
-      reference: stage2.data,
+      reference: `${TECHDEBT_REFERENCE_SHORT} · ${stage2.data}`,
     };
   }
 
   return {
     label: "Modelagem",
     color: "teal",
-    reference: `Dias (2018) · ${category}`,
+    reference: `${ANTIPATTERN_REFERENCE_SHORT} · ${category}`,
   };
 }
