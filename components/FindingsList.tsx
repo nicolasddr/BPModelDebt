@@ -92,7 +92,7 @@ function TabButton({
     >
       <span
         className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md text-xs font-medium ${
-          active ? "bg-accent text-white" : "bg-ok-bg text-ok"
+          active ? "bg-accent text-white" : "bg-s1 text-ink-3"
         }`}
       >
         {stage}
