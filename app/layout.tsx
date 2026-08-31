@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Identificador de dívidas em MPN",
-  description: "Análise de dívidas técnicas em modelos BPMN",
+  title: "BPModelDebt",
+  description:
+    "Identificador de dívidas técnicas em modelos de processos de negócio (BPMN)",
 };
 
 export default function RootLayout({

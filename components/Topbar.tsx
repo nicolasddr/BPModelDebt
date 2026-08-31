@@ -10,6 +10,7 @@ export function Topbar() {
         className="flex cursor-pointer items-center gap-[9px] rounded text-[15px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <IconGitBranch size={19} className="text-accent" stroke={1.75} />
+        <span>BPModelDebt</span>
       </Link>
     </header>
   );

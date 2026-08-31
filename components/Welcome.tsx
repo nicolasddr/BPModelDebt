@@ -21,11 +21,15 @@ export function Welcome() {
           <IconGitBranch size={28} stroke={1.75} />
         </div>
 
-        <h1 className="max-w-[19ch] text-balance text-[clamp(2rem,1.2rem+2.4vw,3rem)] font-bold leading-[1.08] tracking-[-0.022em]">
-          Identificador de dívidas em modelos de processos de negócio
+        <h1 className="text-balance text-[clamp(2rem,1.2rem+2.4vw,3rem)] font-bold leading-[1.08] tracking-[-0.022em]">
+          BPModelDebt
         </h1>
 
-        <p className="mt-5 max-w-[46ch] text-[15px] leading-[1.62] text-ink-2">
+        <p className="mt-3 max-w-[30ch] text-balance text-[15px] font-medium leading-[1.4] text-ink-2">
+          Identificador de dívidas em modelos de processos de negócio
+        </p>
+
+        <p className="mt-5 max-w-[46ch] text-[15px] leading-[1.62] text-ink-3">
           Envie um modelo BPMN e a ferramenta o analisa com apoio de IA,
           apontando anti-padrões de modelagem e dívidas técnicas, cada
           ocorrência com descrição e recomendação de correção.
