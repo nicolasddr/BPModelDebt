@@ -1,6 +1,6 @@
 "use server";
 
-import * as analysis from "@/lib/analysis";
+import * as analysis from "@/lib/analysis/openai";
 import type { StageResult } from "@/lib/schema";
 import {
   hasAcceptedExtension,
