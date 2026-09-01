@@ -1,7 +1,15 @@
 {
-  "name": "ic",
-  "version": "0.1.0",
+  "name": "bpmodeldebt",
+  "version": "1.0.0",
   "private": true,
+  "description": "Aplicação web para identificação de anti-padrões e dívidas técnicas em modelos de processos de negócio em BPMN, com apoio de modelos de linguagem.",
+  "license": "GPL-3.0-or-later",
+  "author": "Universidade Federal de Mato Grosso do Sul (UFMS)",
+  "contributors": [
+    "Maria Istela Cagnin Machado",
+    "Nícolas David Dourado Rodrigues",
+    "Lauriene Santos do Nascimento"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

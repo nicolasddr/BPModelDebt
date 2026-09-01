@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BPModelDebt
 
-## Getting Started
+Identificador de dívidas em modelos de processos de negócio.
 
-First, run the development server:
+Envie um modelo BPMN e a ferramenta o analisa com apoio de IA, apontando
+anti-padrões de modelagem e dívidas técnicas, cada ocorrência com descrição e
+recomendação de correção.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Anti-padrões
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Erros recorrentes na estrutura do modelo, como um processo sem evento de fim ou
+um fluxo cruzando a fronteira de uma piscina.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dívidas técnicas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Escolhas de modelagem que funcionam, mas comprometem a qualidade e a manutenção
+a longo prazo, como uma tarefa que deveria ser um subprocesso ou a falta de
+tratamento de exceções.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+Catálogo de anti-padrões baseado em DIAS, Clemilson Luís de Brito; DANI,
+Vinicius Stein; MENDLING, Jan; THOM, Lucinéia Heloisa. Anti-patterns for process
+modeling problems: an analysis of BPMN 2.0-based tools behavior. In:
+INTERNATIONAL CONFERENCE ON BUSINESS PROCESS MANAGEMENT, 17., 2019, Viena.
+Business Process Management Workshops. Cham: Springer, 2019. p. 745-757.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Catálogo de dívidas técnicas baseado em NASCIMENTO, Lauriene Santos. Catálogo de
+Dívidas Técnicas de Modelos de Processos de Negócio. 2026. Qualificação de
+Mestrado — Programa de Pós-Graduação em Ciência da Computação, Faculdade de
+Computação, Universidade Federal de Mato Grosso do Sul, Campo Grande, 2026. (em
+andamento)
