@@ -1,33 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  /* superfícies */
   --s0: #faf9f5;
   --s1: #f2f0e9;
   --s2: #ffffff;
 
-  /* textos */
   --tx: #1a1915;
   --tx2: #5f5e5a;
   --tx3: #8a8980;
 
-  /* bordas */
   --bd: #e4e1d7;
   --bds: #cfccbf;
 
-  /* accent (marca / ações) */
   --accent: #185fa5;
   --accent-bg: #e6f1fb;
   --accent-bd: #b5d4f4;
 
-  /* estados de estágio */
   --ok: #3b6d11;
   --ok-bg: #eaf3de;
   --ok-bd: #c0dd97;
   --run: #185fa5;
   --run-bg: #e6f1fb;
 
-  /* badges de categoria */
   --amber: #ba7517;
   --amber-bg: #faeeda;
   --amber-tx: #633806;
